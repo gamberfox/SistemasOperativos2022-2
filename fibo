@@ -13,7 +13,7 @@
 #define max_random(min, max) min + rand()%(max + 1 - min)
 #define printf_vector(v,n) for (i = 0; i < n; i++) { printf("%d ",v[i]); }
 #define println printf("\n")
-#define CONSTANTE 3
+#define CONSTANTE 5
 
 int fibonacci(int);
 void* fiboVector(void *);
@@ -21,6 +21,7 @@ void* fiboVector(void *);
 int *vector;
 int nprocesadores;
 int stride;
+int vl2;   //la sequela de vl
 
 int main(int argc, char *argv[]) {
   int vl, // vl: vector_length
@@ -35,6 +36,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
   vl = atoi(argv[1]);
+  vl2 = atoi(argv[1]);
   mr = atoi(argv[2]);
   nprocesadores = get_nprocs();
   stride = (int)(vl/nprocesadores);
@@ -86,13 +88,28 @@ void* fiboVector(void *pos) {
   int i;
   int id = thread_id;
   int str = stride*nprocesadores;
-  printf("Mi posicion %d el stride %d [%d - %d)\n",thread_id,stride, bajo, alto);
+  //printf("Mi posicion %d el stride %d [%d - %d)\n",thread_id,stride, bajo, alto);
+
+  int *vstr;
+  vstr = (int*)malloc(sizeof(int) * stride);
+  int auxlist = 0;
+  int suAux = 0;
   //for (i = bajo; i < alto; i++) {
     //vector[i] = fibonacci(vector[i]);
   //}
-  for (i = id; i < str; i+=nprocesadores){
+  for (i = id; i < vl2; i+=nprocesadores){  // str bad
     //vector[i] = fibonacci(vector[i])+id*5;
-    vector[i] = id;
+    vector[i] = fibonacci(vector[i]);
+    //vector[i] = id;
+    //vector[i] = i;
+    vstr[auxlist] = i;
+    auxlist++;
   }
+
+  printf("las pos donde el hilo %d trabajo fueron [",thread_id);
+  printf_vector(vstr,stride);
+  printf("] \n");
+  int aa = fibonacci(5);
+  printf("%d \n",aa);
   return NULL;
 }
