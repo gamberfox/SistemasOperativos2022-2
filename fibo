@@ -109,7 +109,5 @@ void* fiboVector(void *pos) {
   printf("las pos donde el hilo %d trabajo fueron [",thread_id);
   printf_vector(vstr,stride);
   printf("] \n");
-  int aa = fibonacci(5);
-  printf("%d \n",aa);
   return NULL;
 }
